@@ -71,6 +71,8 @@ Because we plan to use WAL streaming or streaming backup, We need to setup a str
 
 `createuser -P --replication streaming_barman`
 
+**WARNING: ** When you run a command like `apt install` inside the container, you should use `docker commit` too. Otherwise if you make down and up container, the installed packages will be lost. It does not related to `docker volume`. The volume will hold the data of your databse for example, not the changes you made to it's image and conatiner. The better way is to use `Dockerfile` to create a custome image and install desired package inside `Dockerfile` and use this image for production. 
+
 Now we should postgre itself for our desired state. Open the main postgre config file `postgre.conf` and add this configurations: 
 
 ```
