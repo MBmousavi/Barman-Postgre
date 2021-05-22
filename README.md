@@ -174,7 +174,8 @@ Run this command to show the latest full backup:
 
 `barman show-backup <server_name> latest`
 
-We use `barman recover` command to create a restore directory or copy directly the resored files to the standby server. The important thing is here that the time you put for `target_time` should not be before `Begin time`. let's make an example. If full backup runs ate 1 AM, and it takes 5 mis to finish, The `Begin time` will be `2021-05-22 01:00:00.000000+04:30` and the `End time` will be `2021-05-22 01:05:00.000000+04:30`. The `target_time` can not be before 01:00. Let's asuume database crashes at 9 AM. Now we restore the database with the base of full backup at 1 AM and the WALs from 1 AM to 9 AM.
+We use `barman recover` command to create a restore directory or copy directly the resored files to the standby server. The important thing is here that the time you put for `target_time` should not be before `Begin time`. let's make an example. If full backup runs at 1 AM, and it takes 5 mis to finish, The `Begin time` will be `2021-05-22 01:00:00.000000+04:30` and the `End time` will be `2021-05-22 01:05:00.000000+04:30`. The `target_time` can not be before 01:00.
+Let's asuume database crashes at 9 AM. Now we restore the database with the base of full backup at 1 AM and the WALs from 1 AM to 9 AM.
 
 Now run `barman list-backup <server-name>` to list the full backup. It will show the backup IDs too. Copy the last full backup ID and use it in this command:
  
