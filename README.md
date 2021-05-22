@@ -177,7 +177,7 @@ Run this command to show the latest full backup:
 We use `barman recover` command to create a restore directory or copy directly the resored files to the standby server. The important thing is here that the time you put for `target_time` should not be before `Begin time`.
 
 let's make an example. If full backup runs at 1 AM, and it takes 5 mis to finish, The `Begin time` will be `2021-05-22 01:00:00.000000+04:30` and the `End time` will be `2021-05-22 01:05:00.000000+04:30`. The `target_time` can not be before 01:00.
-Let's asuume database crashes at 9 AM. Now we restore the database with the base of full backup at 1 AM and the WALs from 1 AM to 9 AM.
+Let's asuume database crashes at 9 AM. Now we restore the database with the base of full backup at 1 AM and the WALs since 1 AM to 9 AM.
 
 Now run `barman list-backup <server-name>` to list the full backup. It will show the backup IDs too. Copy the last full backup ID and use it in this command:
  
@@ -189,7 +189,7 @@ or
 
 Then you can copy `~/restore_directory/` to any where you want and start a fresh postgre instance with this data directory.
 
-`Barman` also backup the config filesm but it will comments the `archive_command` line.
+`Barman` also backup the config files but it will comments the `archive_command` line.
 
 Another point is `Barman` create a file called `recovery.conf` in the root directory of resored directory. It will be something like this:
 
@@ -198,7 +198,7 @@ restore_command = 'cp barman_wal/%f "%p"'
 recovery_end_command = 'rm -fr barman_wal'
 recovery_target_time = '2021-05-22 08:59:00.000000+04:30'
 ``` 
-When you start the stand by postgre, it will begin to restore to `target_time` based on full backup and with the help pf WALs to get to desired time.
+When you start the stand by postgre, it will begin to restore to `target_time` based on full backup and help of WALs since full backup to `target_time`.
 
 This process is called `Point in time recovery`.
 
